@@ -21,7 +21,7 @@ class CartCard extends React.Component {
                 )}
                     <Grid.Column>
                         <Segment>
-                            <p>SUBTOTAL: ${this.props.subTotal.toFixed(2)}</p>
+                            <p>SUBTOTAL: ${this.props.subTotal.price.toFixed(2)}</p>
                         </Segment>
                         <Segment>
                             <Button fluid size='large' color='green'>CHECKOUT</Button>

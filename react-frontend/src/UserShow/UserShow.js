@@ -11,7 +11,7 @@ import { Button, Container, Icon, Header, Menu } from 'semantic-ui-react'
 export class UserShow extends React.Component {
 
     state = {
-        currentPage: 'home',
+        currentPage: 'index',
         user: null,
         item: null,
         itemCollection: [],
@@ -24,8 +24,8 @@ export class UserShow extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then( response => response.json())
-            .then( user => this.setState({ 
+            .then(response => response.json())
+            .then(user => this.setState({ 
                 user: user
             }))
         
@@ -34,8 +34,8 @@ export class UserShow extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then( response => response.json())
-            .then( itemCollection => this.setState({ itemCollection: itemCollection}))
+            .then(response => response.json())
+            .then(itemCollection => this.setState({ itemCollection: itemCollection}))
     }
 
     createCart = (e) => {
@@ -52,8 +52,8 @@ export class UserShow extends React.Component {
                 item_id: this.state.item.id
             })
         })
-            .then( response => response.json())
-            .then( cart => this.setState({
+            .then(response => response.json())
+            .then(cart => this.setState({
                 user: {
                     ...this.state.user,
                     carts: [
@@ -80,16 +80,17 @@ export class UserShow extends React.Component {
             }
         })
             .then( response => response.json())
-            .then( deletedCart => this.removeCart(deletedCart))
+            .then( removeCart => this.removeCart(removeCart))
     }
 
-    removeCart = (deletedCart) => {
-        const carts = this.state.user.carts.filter( cart => cart.id !== deletedCart.id )
-
+    removeCart = (removeCart) => {
+        const carts = this.state.user.carts.filter(cart => cart.id !== removeCart.id)
+        const items = carts.map(cart => cart.item)
         this.setState({
             user: {
                 ...this.state.user,
                 carts: carts,
+                items: items
             }
         })
     }
@@ -103,13 +104,14 @@ export class UserShow extends React.Component {
 
     render() {
         if(this.state.user === null){
-            return <h1>Loading...</h1>
+            return <div></div>
         }
 
-        var subTotal = 0
-        this.state.user.carts.forEach( cart => subTotal = subTotal + cart.item.price)
-        
+        const cartTotal = this.state.user.carts.length
+        const subTotal = this.state.user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0})
+
         let CurrentPage;
+
         switch (this.state.currentPage) {
             case 'home':
                 CurrentPage = <HomeCard />;
@@ -141,7 +143,7 @@ export class UserShow extends React.Component {
                     <div align='right'>
                         <Button icon labelPosition='left' onClick={() => this.switchPage('cart', null)}>
                             <Icon name='shopping cart'/> 
-                            {this.state.user.carts.length}
+                            {cartTotal}
                         </Button>
                     </div>
                 </Container>
