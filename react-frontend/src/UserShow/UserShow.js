@@ -108,7 +108,8 @@ export class UserShow extends React.Component {
         }
 
         const cartTotal = this.state.user.carts.length
-        const subTotal = this.state.user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0})
+        const subTotal = this.state.user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price
+        const salesTax = subTotal * 0.0625
 
         let CurrentPage;
 
@@ -120,7 +121,7 @@ export class UserShow extends React.Component {
                 CurrentPage = <ItemCollection itemCollection={this.state.itemCollection} switchPage={this.switchPage}/>;
                 break;
             case 'cart':
-                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} subTotal={subTotal}/>
+                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} salesTax={salesTax} subTotal={subTotal}/>
                 break;
             case 'contact':
                 CurrentPage = <ContactCard />;
@@ -140,12 +141,11 @@ export class UserShow extends React.Component {
             <div>
                 <Container fluid style={{ marginTop: '5em', width: '80em'}}>
                     <Header as='h1' align='center'>STORE</Header>
-                    <div align='right'>
+                    <Container align='right'>
                         <Button icon labelPosition='left' onClick={() => this.switchPage('cart', null)}>
-                            <Icon name='shopping cart'/> 
-                            {cartTotal}
+                            <Icon name='shopping cart'/>{cartTotal}
                         </Button>
-                    </div>
+                    </Container>
                 </Container>
                 <Menu >
                     <Container >
