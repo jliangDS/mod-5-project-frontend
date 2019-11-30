@@ -15,6 +15,10 @@ export class UserShow extends React.Component {
         user: null,
         item: null,
         itemCollection: [],
+        subTotal: 0,
+        salesTax: 0,
+        shipping: 0,
+        estimatedTotal: 0,
     }
 
     componentDidMount(){
@@ -26,7 +30,10 @@ export class UserShow extends React.Component {
         })
             .then(response => response.json())
             .then(user => this.setState({ 
-                user: user
+                user: user,
+                subTotal: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price,
+                salesTax: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price * 0.0625,
+                estimatedTotal: ((user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price:0}).price * 1.0625) + this.state.shipping)
             }))
         
         fetch('http://localhost:3000/items', {
@@ -64,7 +71,10 @@ export class UserShow extends React.Component {
                         ...this.state.user.items,
                         cart.item
                     ]
-                }
+                },
+                subTotal: (this.state.subTotal + cart.item.price),
+                salesTax: ((this.state.subTotal + cart.item.price) * 0.0625),
+                estimatedTotal: (((this.state.subTotal + cart.item.price) * 1.0625) + this.state.shipping)
             }))
     }
 
@@ -91,7 +101,17 @@ export class UserShow extends React.Component {
                 ...this.state.user,
                 carts: carts,
                 items: items
-            }
+            },
+            subTotal: (this.state.subTotal - removeCart.item.price),
+            salesTax: ((this.state.subTotal - removeCart.item.price) * 0.0625),
+            estimatedTotal: (((this.state.subTotal - removeCart.item.price) * 1.0625) + this.state.shipping)
+        })
+    }
+
+    switchShipping = (shipping) => {
+        this.setState({
+            shipping: shipping,
+            estimatedTotal: this.state.estimatedTotal - this.state.shipping + shipping
         })
     }
 
@@ -107,12 +127,7 @@ export class UserShow extends React.Component {
             return <div></div>
         }
 
-        const cartTotal = this.state.user.carts.length
-        const subTotal = this.state.user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price
-        const salesTax = subTotal * 0.0625
-
-        let CurrentPage;
-
+        let CurrentPage
         switch (this.state.currentPage) {
             case 'home':
                 CurrentPage = <HomeCard />;
@@ -121,7 +136,7 @@ export class UserShow extends React.Component {
                 CurrentPage = <ItemCollection itemCollection={this.state.itemCollection} switchPage={this.switchPage}/>;
                 break;
             case 'cart':
-                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} salesTax={salesTax} subTotal={subTotal}/>
+                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} estimatedTotal={this.state.estimatedTotal} switchShipping={this.switchShipping}/>
                 break;
             case 'contact':
                 CurrentPage = <ContactCard />;
@@ -135,20 +150,22 @@ export class UserShow extends React.Component {
             case 'show':
                 CurrentPage = <ItemCard createCart={this.createCart} item={this.state.item} user={this.state.user}/>;
                 break;
+            default:
+                break;
         }
         
         return (
-            <div>
-                <Container fluid style={{ marginTop: '5em', width: '80em'}}>
-                    <Header as='h1' align='center'>STORE</Header>
+            <Container>
+                <Container fluid>
+                    <Header as='h1' align='center'></Header>
                     <Container align='right'>
                         <Button icon labelPosition='left' onClick={() => this.switchPage('cart', null)}>
-                            <Icon name='shopping cart'/>{cartTotal}
+                            <Icon name='shopping cart'/>{this.state.user.carts.length}
                         </Button>
                     </Container>
                 </Container>
-                <Menu >
-                    <Container >
+                <Menu>
+                    <Container>
                         <Menu.Item as='a' header onClick={() => this.switchPage('home', null)}>HOME</Menu.Item>
                         <Menu.Item as='a' header onClick={() => this.switchPage('index', null)}>SHOP</Menu.Item>
                         <Menu.Item as='a' header onClick={() => this.switchPage('about', null)}>ABOUT</Menu.Item>
@@ -157,7 +174,7 @@ export class UserShow extends React.Component {
                     </Container>
                 </Menu>
                 {CurrentPage}
-            </div>
+            </Container>
         )
     }
 }

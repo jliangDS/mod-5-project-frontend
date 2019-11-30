@@ -15,9 +15,9 @@ class CartCard extends React.Component {
                                     <Image src={cart.item.image} style={{ height: '10vh' }}/>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <p>{cart.item.name}</p>
+                                    <p><strong>{cart.item.name}</strong></p>
                                     <p>${cart.item.price}</p>
-                                    <Form onSubmit={e => this.props.deleteCart(e)}>
+                                    <Form onSubmit={(e) => this.props.deleteCart(e)}>
                                         <Button color='orange' compact value={cart.id}>REMOVE</Button>
                                     </Form>
                                 </Grid.Column>
@@ -31,13 +31,13 @@ class CartCard extends React.Component {
                             <Form>
                             <Grid columns={2}>
                                 <Grid.Column>
-                                    <Form.Radio defaultChecked label='STANDARD SHIPPING' control='input' type='radio' name='shippingMethod'/>
+                                    <Form.Radio label='STANDARD SHIPPING' control='input' type='radio' name='shippingMethod' onChange={() => this.props.switchShipping(9.95)}/>
                                 </Grid.Column>
                                 <Grid.Column>
                                     <p>$9.95</p>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <Form.Radio label='PRIORITY SHIPPING' control='input' type='radio' name='shippingMethod'/>
+                                    <Form.Radio label='PRIORITY SHIPPING' control='input' type='radio' name='shippingMethod' onChange={() => this.props.switchShipping(19.95)}/>
                                 </Grid.Column>
                                 <Grid.Column>
                                     <p>$19.95</p>
@@ -45,7 +45,9 @@ class CartCard extends React.Component {
                             </Grid>
                             </Form>
                         </Segment>
-                        <Segment basic>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Segment>
                             <Grid columns={2}>
                                 <Grid.Column>
                                     <p>SUBTOTAL</p>
@@ -63,16 +65,16 @@ class CartCard extends React.Component {
                                     <p>SHIPPING</p>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <p>$</p>
+                                    <p>${this.props.shipping}</p>
                                 </Grid.Column>
                             </Grid>
                             <Divider clearing/>
                             <Grid columns={2}>
                                 <Grid.Column>
-                                    <p>ESTIMATED TOTAL</p>
+                                    <p><strong>ESTIMATED TOTAL</strong></p>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <p>$</p>
+                                    <p><strong>${this.props.estimatedTotal.toFixed(2)}</strong></p>
                                 </Grid.Column>
                             </Grid>
                         </Segment>

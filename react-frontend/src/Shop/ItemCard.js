@@ -11,7 +11,7 @@ class ItemCard extends React.Component {
                         <Grid.Column>
                             <Image src={this.props.item.image}/>
                         </Grid.Column>
-                        <Grid.Column style={{ maxWidth: 450 }}>
+                        <Grid.Column>
                             <Segment >
                             <p>{this.props.item.name}</p>
                             <p>${this.props.item.price}</p>
