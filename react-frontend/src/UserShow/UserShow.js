@@ -19,6 +19,8 @@ export class UserShow extends React.Component {
         salesTax: 0,
         shipping: 0,
         estimatedTotal: 0,
+        defaultCheckedStandard: false,
+        defaultCheckedPriority: false,
     }
 
     componentDidMount(){
@@ -32,7 +34,7 @@ export class UserShow extends React.Component {
             .then(user => this.setState({ 
                 user: user,
                 subTotal: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price,
-                salesTax: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price * 0.0625,
+                salesTax: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price * 0.0825,
                 estimatedTotal: ((user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price:0}).price * 1.0625) + this.state.shipping)
             }))
         
@@ -73,7 +75,7 @@ export class UserShow extends React.Component {
                     ]
                 },
                 subTotal: (this.state.subTotal + cart.item.price),
-                salesTax: ((this.state.subTotal + cart.item.price) * 0.0625),
+                salesTax: ((this.state.subTotal + cart.item.price) * 0.0825),
                 estimatedTotal: (((this.state.subTotal + cart.item.price) * 1.0625) + this.state.shipping)
             }))
     }
@@ -103,16 +105,32 @@ export class UserShow extends React.Component {
                 items: items
             },
             subTotal: (this.state.subTotal - removeCart.item.price),
-            salesTax: ((this.state.subTotal - removeCart.item.price) * 0.0625),
+            salesTax: ((this.state.subTotal - removeCart.item.price) * 0.0825),
             estimatedTotal: (((this.state.subTotal - removeCart.item.price) * 1.0625) + this.state.shipping)
         })
     }
 
     switchShipping = (shipping) => {
-        this.setState({
-            shipping: shipping,
-            estimatedTotal: this.state.estimatedTotal - this.state.shipping + shipping
-        })
+        switch (shipping) {
+            case 9.95: 
+                this.setState({
+                    shipping: shipping,
+                    estimatedTotal: this.state.estimatedTotal - this.state.shipping + shipping,
+                    defaultCheckedStandard: true,
+                    defaultCheckedPriority: false
+                })
+                break;
+            case 19.95:
+                this.setState({
+                    shipping: shipping,
+                    estimatedTotal: this.state.estimatedTotal - this.state.shipping + shipping,
+                    defaultCheckedStandard: false,
+                    defaultCheckedPriority: true
+                })
+                break;
+            default:
+                break;
+        }
     }
 
     switchPage = (page, item) => {
@@ -136,7 +154,7 @@ export class UserShow extends React.Component {
                 CurrentPage = <ItemCollection itemCollection={this.state.itemCollection} switchPage={this.switchPage}/>;
                 break;
             case 'cart':
-                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} estimatedTotal={this.state.estimatedTotal} switchShipping={this.switchShipping}/>
+                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} estimatedTotal={this.state.estimatedTotal} switchShipping={this.switchShipping} defaultCheckedStandard={this.state.defaultCheckedStandard} defaultCheckedPriority={this.state.defaultCheckedPriority}/>
                 break;
             case 'contact':
                 CurrentPage = <ContactCard />;

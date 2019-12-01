@@ -3,6 +3,11 @@ import { Button, Container, Divider, Form, Grid, Header, Image, Segment } from '
 
 class CartCard extends React.Component {
 
+    state = {
+        standard: 9.95,
+        priority: 19.95,
+    }
+
     render() {
         return (
             <Container text>
@@ -29,18 +34,12 @@ class CartCard extends React.Component {
                         <Segment>
                             <Header align='center'>SHIPPING</Header>
                             <Form>
-                            <Grid columns={2}>
+                            <Grid columns={1}>
                                 <Grid.Column>
-                                    <Form.Radio label='STANDARD SHIPPING' control='input' type='radio' name='shippingMethod' onChange={() => this.props.switchShipping(9.95)}/>
+                                    <Form.Radio defaultChecked={this.props.defaultCheckedStandard} label='STANDARD SHIPPING - $9.95' control='input' type='radio' name='shippingMethod' onChange={() => this.props.switchShipping(this.state.standard)}/>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <p>$9.95</p>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <Form.Radio label='PRIORITY SHIPPING' control='input' type='radio' name='shippingMethod' onChange={() => this.props.switchShipping(19.95)}/>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <p>$19.95</p>
+                                    <Form.Radio defaultChecked={this.props.defaultCheckedPriority} label='PRIORITY SHIPPING - $19.95' control='input' type='radio' name='shippingMethod' onChange={() => this.props.switchShipping(this.state.priority)}/>
                                 </Grid.Column>
                             </Grid>
                             </Form>
