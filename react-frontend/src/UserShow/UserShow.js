@@ -34,7 +34,7 @@ export class UserShow extends React.Component {
             .then(user => this.setState({ 
                 user: user,
                 subTotal: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price,
-                salesTax: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price * 0.0825,
+                salesTax: user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price: 0}).price * 0.0625,
                 estimatedTotal: ((user.items.reduce(function (a, b) {return {price: a.price + b.price}}, {price:0}).price * 1.0625) + this.state.shipping)
             }))
         
@@ -75,7 +75,7 @@ export class UserShow extends React.Component {
                     ]
                 },
                 subTotal: (this.state.subTotal + cart.item.price),
-                salesTax: ((this.state.subTotal + cart.item.price) * 0.0825),
+                salesTax: ((this.state.subTotal + cart.item.price) * 0.0625),
                 estimatedTotal: (((this.state.subTotal + cart.item.price) * 1.0625) + this.state.shipping)
             }))
     }
@@ -105,7 +105,7 @@ export class UserShow extends React.Component {
                 items: items
             },
             subTotal: (this.state.subTotal - removeCart.item.price),
-            salesTax: ((this.state.subTotal - removeCart.item.price) * 0.0825),
+            salesTax: ((this.state.subTotal - removeCart.item.price) * 0.0625),
             estimatedTotal: (((this.state.subTotal - removeCart.item.price) * 1.0625) + this.state.shipping)
         })
     }
