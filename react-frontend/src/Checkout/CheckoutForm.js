@@ -26,7 +26,7 @@ class CheckoutForm extends React.Component {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    amount: this.props.estimatedTotal,
+                    amount: this.props.estimatedTotal.toFixed(2) * 100,
                     payload: payload
                 })
             })
