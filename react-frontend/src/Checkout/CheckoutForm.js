@@ -20,17 +20,18 @@ class CheckoutForm extends React.Component {
 
     handleSubmit = (ev) => {
         ev.preventDefault()
-        const amount = 5000
+        const amount = this.props.estimatedTotal.toFixed(2) * 100
         this.props.stripe.createToken().then(payload => {
             fetch('http://localhost:3000/charges', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    amount: this.props.estimatedTotal.toFixed(2) * 100,
+                    amount: amount,
                     payload: payload
                 })
             })
         })
+        console.log(this.props.estimatedTotal)
     }
 
     render() {
