@@ -9,7 +9,7 @@ class ItemCard extends React.Component {
                 <Grid>
                     <Grid.Row columns={2}>
                         <Grid.Column>
-                            <Image src={this.props.item.image}/>
+                            <Image src={this.props.item.image} style={{ height: '50vh' }}/>
                         </Grid.Column>
                         <Grid.Column>
                             <Segment >

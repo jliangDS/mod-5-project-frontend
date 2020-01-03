@@ -6,6 +6,8 @@ import ContactCard from '../Menu/ContactCard'
 import ItemCollection from '../Shop/ItemCollection'
 import ItemCard from '../Shop/ItemCard'
 import CartCard from '../Cart/CartCard'
+import ShippingFormNew from '../Checkout/ShippingFormNew'
+import Stripe from '../Checkout/Stripe'
 import { Button, Container, Icon, Header, Menu } from 'semantic-ui-react'
 
 export class UserShow extends React.Component {
@@ -14,6 +16,7 @@ export class UserShow extends React.Component {
         currentPage: 'index',
         user: null,
         item: null,
+        shippingType: null, 
         itemCollection: [],
         subTotal: 0,
         salesTax: 0,
@@ -21,6 +24,7 @@ export class UserShow extends React.Component {
         estimatedTotal: 0,
         defaultCheckedStandard: false,
         defaultCheckedPriority: false,
+        order: null, 
     }
 
     componentDidMount(){
@@ -110,11 +114,18 @@ export class UserShow extends React.Component {
         })
     }
 
+    setOrder = (order) => {
+        this.setState({
+            order: order, 
+        })
+    }
+
     switchShipping = (shipping) => {
         switch (shipping) {
             case 9.95: 
                 this.setState({
                     shipping: shipping,
+                    shippingType: "STANDARD SHIPPING",
                     estimatedTotal: this.state.estimatedTotal - this.state.shipping + shipping,
                     defaultCheckedStandard: true,
                     defaultCheckedPriority: false
@@ -123,6 +134,7 @@ export class UserShow extends React.Component {
             case 19.95:
                 this.setState({
                     shipping: shipping,
+                    shippingType: "PRIORITY SHIPPING",
                     estimatedTotal: this.state.estimatedTotal - this.state.shipping + shipping,
                     defaultCheckedStandard: false,
                     defaultCheckedPriority: true
@@ -154,7 +166,13 @@ export class UserShow extends React.Component {
                 CurrentPage = <ItemCollection itemCollection={this.state.itemCollection} switchPage={this.switchPage}/>;
                 break;
             case 'cart':
-                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} estimatedTotal={this.state.estimatedTotal} switchShipping={this.switchShipping} defaultCheckedStandard={this.state.defaultCheckedStandard} defaultCheckedPriority={this.state.defaultCheckedPriority}/>
+                CurrentPage = <CartCard carts={this.state.user.carts} deleteCart={this.deleteCart} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} estimatedTotal={this.state.estimatedTotal} switchPage={this.switchPage} switchShipping={this.switchShipping} defaultCheckedStandard={this.state.defaultCheckedStandard} defaultCheckedPriority={this.state.defaultCheckedPriority}/>
+                break;
+            case 'checkout':
+                CurrentPage = <ShippingFormNew user={this.state.user} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} shippingType={this.state.shippingType} estimatedTotal={this.state.estimatedTotal} switchPage={this.switchPage} setOrder={this.setOrder}/>;
+                break;
+            case 'stripe':
+                CurrentPage = <Stripe user={this.state.user} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} estimatedTotal={this.state.estimatedTotal} order={this.state.order}/>;
                 break;
             case 'contact':
                 CurrentPage = <ContactCard />;

@@ -77,7 +77,7 @@ class CartCard extends React.Component {
                                 </Grid.Column>
                             </Grid>
                         </Segment>
-                        <Button fluid size='large' color='green'>CHECKOUT</Button>
+                        <Button fluid size='large' color='green' onClick={() => this.props.switchPage('checkout', null)}>CHECKOUT</Button>
                     </Grid.Column>
                 </Grid>  
             </Container>
