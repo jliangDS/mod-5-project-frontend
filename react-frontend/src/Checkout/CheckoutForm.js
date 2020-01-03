@@ -22,7 +22,7 @@ class CheckoutForm extends React.Component {
         ev.preventDefault()
         const amount = 5000
         this.props.stripe.createToken().then(payload => {
-            fetch('http://localhost:3000/create', {
+            fetch('http://localhost:3000/charges', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
