@@ -31,7 +31,8 @@ class CheckoutForm extends React.Component {
                 })
             })
         })
-        .then(charge => console.log(charge))
+        .then(charge => console.log("Charge", charge))
+        .catch(err => console.log("Error", err))
         console.log(this.props.estimatedTotal)
     }
 
