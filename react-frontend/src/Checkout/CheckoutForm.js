@@ -31,6 +31,7 @@ class CheckoutForm extends React.Component {
                 })
             })
         })
+        .then(charge => console.log(charge))
         console.log(this.props.estimatedTotal)
     }
 
