@@ -30,6 +30,7 @@ class CheckoutForm extends React.Component {
                     payload: payload
                 })
             })
+            .then(charge => console.log("NewCharge", charge))
         })
         .then(charge => console.log("Charges", charge))
         .then( response => {
