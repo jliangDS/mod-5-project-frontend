@@ -31,7 +31,17 @@ class CheckoutForm extends React.Component {
                 })
             })
         })
-        .then(charge => console.log("Charge", charge))
+        .then(charge => console.log("Charges", charge))
+        .then( response => {
+            fetch(`http://localhost:3000/orders/${this.props.order.id}`, {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    order: this.props.order,
+                })
+            })
+            .then(order => console.log(order))
+        })
         .catch(err => console.log("Error", err))
         console.log(this.props.estimatedTotal)
         console.log('test')
