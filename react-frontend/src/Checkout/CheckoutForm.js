@@ -18,10 +18,11 @@ class CheckoutForm extends React.Component {
         
     }
 
-    handleSubmit = (ev) => {
+    async handleSubmit(ev) {
         ev.preventDefault()
-        const amount = this.props.estimatedTotal.toFixed(2) * 100
-        console.log(this.props.stripe.createToken())
+        // const amount = this.props.estimatedTotal.toFixed(2) * 100
+        let token = await this.props.stripe.createToken()
+        // console.log(this.props.stripe.createToken())
         // this.props.stripe.createToken().then(payload => {
         //     fetch('http://localhost:3000/charges', {
         //         method: 'POST',
@@ -33,19 +34,19 @@ class CheckoutForm extends React.Component {
         //     })
         //     .then(charge => console.log("NewCharge", charge))
         // })
-        .then(charge => console.log("Charges", charge))
-        .then( response => {
-            fetch(`http://localhost:3000/orders/${this.props.order.id}`, {
-                method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    order: this.props.order,
-                })
-            })
-            .then(order => console.log(order))
-        })
-        .catch(err => console.log("Error", err))
-        console.log(this.props.estimatedTotal)
+        // .then(charge => console.log("Charges", charge))
+        // .then( response => {
+        //     fetch(`http://localhost:3000/orders/${this.props.order.id}`, {
+        //         method: 'PATCH',
+        //         headers: {'Content-Type': 'application/json'},
+        //         body: JSON.stringify({
+        //             order: this.props.order,
+        //         })
+        //     })
+        //     .then(order => console.log(order))
+        // })
+        // .catch(err => console.log("Error", err))
+        console.log(token)
         console.log('test')
     }
 
