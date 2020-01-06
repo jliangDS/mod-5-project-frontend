@@ -29,7 +29,8 @@ class CheckoutForm extends React.Component {
                     payload: payload 
                 })
             })
-            .then(charge => console.log("NewCharge", charge))
+            .then(response => response.json())
+            .then(response => console.log(response))
         })
         .then(charge => console.log("Charges", charge))
         // console.log(this.props.stripe.createToken())
