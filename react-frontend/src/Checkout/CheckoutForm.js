@@ -15,11 +15,9 @@ class CheckoutForm extends React.Component {
 
     handleSubmit = (ev) => {
         ev.preventDefault()
-        this.props.stripe.createToken().then(payload => {
-            console.log(payload)
-        })
-        const amount = this.props.estimatedTotal.toFixed(2) * 100
 
+        const amount = this.props.estimatedTotal.toFixed(2) * 100
+        console.log('submit')
         this.props.stripe.createToken().then(payload => {
             fetch('http://localhost:3000/charges', {
                 method: 'POST',
@@ -32,7 +30,6 @@ class CheckoutForm extends React.Component {
             .then(response => response.json())
             .then(response => console.log(response))
         })
-        .then(charge => console.log("Charges", charge))
         // console.log(this.props.stripe.createToken())
         // this.props.stripe.createToken().then(payload => {
         //     fetch('http://localhost:3000/charges', {
@@ -57,7 +54,6 @@ class CheckoutForm extends React.Component {
         //     .then(order => console.log(order))
         // })
         // .catch(err => console.log("Error", err))
-        console.log('test')
     }
 
     render() {
