@@ -7,23 +7,31 @@ class CheckoutForm extends React.Component {
 
     state = {
         user: 'testing',
-        // subTotal: this.props.subTotal,
-        // salesTax: this.props.salesTax,
-        // shipping: this.props.shipping,
-        // estimatedTotal: this.props.estimatedTotal,
-        // order: this.props.order,
     }
 
     componentDidMount() {
         
     }
 
-    async handleSubmit(ev) {
+    handleSubmit = (ev) => {
         ev.preventDefault()
-        // const amount = this.props.estimatedTotal.toFixed(2) * 100
         this.props.stripe.createToken().then(payload => {
             console.log(payload)
         })
+        const amount = this.props.estimatedTotal.toFixed(2) * 100
+
+        this.props.stripe.createToken().then(payload => {
+            fetch('http://localhost:3000/charges', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    amount: amount,
+                    payload: payload 
+                })
+            })
+            .then(charge => console.log("NewCharge", charge))
+        })
+        .then(charge => console.log("Charges", charge))
         // console.log(this.props.stripe.createToken())
         // this.props.stripe.createToken().then(payload => {
         //     fetch('http://localhost:3000/charges', {
