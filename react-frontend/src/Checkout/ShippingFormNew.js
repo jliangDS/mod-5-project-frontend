@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Grid, Segment } from 'semantic-ui-react'
+import { Button, Divider, Form, Grid, Image, Segment } from 'semantic-ui-react'
 
 export default function ShippingFormNew(props){
 
@@ -37,13 +37,12 @@ export default function ShippingFormNew(props){
         })
             .then(response => response.json())
             .then(order => props.setOrder(order))
-            .then(console.log)
             .then(props.switchPage('stripe', null))
     }
 
     return (
         <Grid textAlign='center'>
-            <Grid.Column>
+            <Grid.Column width={12}>
                 <Form size='large' onSubmit={handleSubmit}>
                     <Segment>
                         <Form.Input label="Full Name" value={shipping.fullName} onChange={e => changeShipping({...shipping, fullName: e.target.value})}/>
@@ -56,6 +55,24 @@ export default function ShippingFormNew(props){
                         <Button fluid size='large' color='green'>SAVE & CONTINUE</Button>
                     </Segment>
                 </Form>
+            </Grid.Column>
+            <Grid.Column width={4}>
+                <Segment>
+                    {props.user.items.map( item => 
+                        <div key={item.id} align='center' >
+                            <Image src={item.image} style={{ height: '10vh' }} />
+                            <p>{item.name}</p>
+                            <p>${item.price}</p>
+                            <Divider hidden />
+                        </div>
+                    )}
+                    <div>
+                        <p>SUBTOTAL ${props.subTotal.toFixed(2)}</p>
+                        <p>SALES TAX ${props.salesTax.toFixed(2)}</p>
+                        <p>SHIPPING ${props.shipping.toFixed(2)}</p>
+                        <p>TOTAL ${props.estimatedTotal.toFixed(2)}</p>
+                    </div>
+                </Segment>
             </Grid.Column>
         </Grid>
     )

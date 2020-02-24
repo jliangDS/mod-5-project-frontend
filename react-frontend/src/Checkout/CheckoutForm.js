@@ -5,65 +5,32 @@ import { Button, Container, Divider, Form } from 'semantic-ui-react'
 
 class CheckoutForm extends React.Component {
 
-    state = {
-        user: 'testing',
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    componentDidMount() {
-        
-    }
-
-    handleSubmit = (ev) => {
+    async handleSubmit(ev) {
         ev.preventDefault()
 
         const amount = this.props.estimatedTotal.toFixed(2) * 100
-        console.log('submit')
-        this.props.stripe.createToken().then(payload => {
-            fetch('http://localhost:3000/charges', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    amount: amount,
-                    payload: payload 
-                })
+        const stripe = this.props.stripe 
+        const payload = await stripe.createToken()
+
+        fetch('http://localhost:3000/charges', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'},
+            body: JSON.stringify({
+                amount: amount,
+                payload: payload
             })
-            .then(response => response.json())
-            .then(response => console.log(response))
         })
-        // console.log(this.props.stripe.createToken())
-        // this.props.stripe.createToken().then(payload => {
-        //     fetch('http://localhost:3000/charges', {
-        //         method: 'POST',
-        //         headers: {'Content-Type': 'application/json'},
-        //         body: JSON.stringify({
-        //             amount: amount,
-        //             payload: payload
-        //         })
-        //     })
-        //     .then(charge => console.log("NewCharge", charge))
-        // })
-        // .then(charge => console.log("Charges", charge))
-        // .then( response => {
-        //     fetch(`http://localhost:3000/orders/${this.props.order.id}`, {
-        //         method: 'PATCH',
-        //         headers: {'Content-Type': 'application/json'},
-        //         body: JSON.stringify({
-        //             order: this.props.order,
-        //         })
-        //     })
-        //     .then(order => console.log(order))
-        // })
-        // .catch(err => console.log("Error", err))
+        .then(response => console.log(response))
     }
 
     render() {
-        console.log(this.props.user)
-        console.log(this.props.subTotal)
-        console.log(this.props.salesTax)
-        console.log(this.props.shipping)
-        console.log(this.props.estimatedTotal)
-        console.log(this.props.order)
-
         return (
             <Container>
                 <Form onSubmit={this.handleSubmit}>

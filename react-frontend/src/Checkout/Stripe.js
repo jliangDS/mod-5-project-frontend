@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { Button, Form, Grid, Segment } from 'semantic-ui-react'
+import React from 'react'
 import {Elements} from 'react-stripe-elements'
 
 import CheckoutForm from './CheckoutForm'
