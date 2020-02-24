@@ -1,6 +1,7 @@
 import React from 'react';
 import HomeCard from '../Menu/HomeCard'
 import NewsCard from '../Menu/NewsCard'
+import OrdersCard from '../Menu/OrdersCard'
 import AboutCard from '../Menu/AboutCard'
 import ContactCard from '../Menu/ContactCard'
 import ItemCollection from '../Shop/ItemCollection'
@@ -51,6 +52,13 @@ export class UserShow extends React.Component {
             .then(itemCollection => this.setState({ itemCollection: itemCollection}))
     }
 
+    handleLogout() {
+        this.setState({
+            user: null
+        })
+        localStorage.clear()
+        this.props.history.push(`/`)
+    }
     createCart = (e) => {
         e.preventDefault()
         const token = localStorage.getItem('token')
@@ -186,6 +194,9 @@ export class UserShow extends React.Component {
             case 'show':
                 CurrentPage = <ItemCard createCart={this.createCart} item={this.state.item} user={this.state.user}/>;
                 break;
+            case 'orders':
+                CurrentPage = <OrdersCard user={this.state.user} />;
+                break; 
             default:
                 break;
         }
@@ -195,6 +206,9 @@ export class UserShow extends React.Component {
                 <Container fluid>
                     <Header as='h1' align='center'></Header>
                     <Container align='right'>
+                        <Button icon labelPosition='left' color='orange' onClick={() => this.handleLogout()}>
+                            <Icon name='log out'/>LOG OUT
+                        </Button>
                         <Button icon labelPosition='left' onClick={() => this.switchPage('cart', null)}>
                             <Icon name='shopping cart'/>{this.state.user.carts.length}
                         </Button>
@@ -207,6 +221,7 @@ export class UserShow extends React.Component {
                         <Menu.Item as='a' header onClick={() => this.switchPage('about', null)}>ABOUT</Menu.Item>
                         <Menu.Item as='a' header onClick={() => this.switchPage('news', null)}>NEWS & EVENTS</Menu.Item>
                         <Menu.Item as='a' header onClick={() => this.switchPage('contact', null)}>CONTACT</Menu.Item>
+                        <Menu.Item as='a' header onClick={() => this.switchPage('orders', null)}>ORDERS</Menu.Item>
                     </Container>
                 </Menu>
                 {CurrentPage}

@@ -16,7 +16,7 @@ class CheckoutForm extends React.Component {
         const amount = this.props.estimatedTotal.toFixed(2) * 100
         const stripe = this.props.stripe 
         const payload = await stripe.createToken()
-
+        console.log(this.props)
         fetch('http://localhost:3000/charges', {
             method: 'POST',
             headers: {
@@ -27,14 +27,31 @@ class CheckoutForm extends React.Component {
                 payload: payload
             })
         })
-        .then(response => console.log(response))
+        .then(response => {
+            if(response.status === 204) {
+                fetch(`http://localhost:3000/orders/${this.props.order.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }
+                })
+                .then(response => alert("Payment Success"))
+            }
+            else {
+                alert("Payment Failed")
+            }
+        })
     }
 
     render() {
         return (
             <Container>
                 <Form onSubmit={this.handleSubmit}>
-                    <CardElement />
+                    <p><strong>Demo Card Number: 4242 4242 4242 4242</strong></p>
+                    <p><strong>MM/YY: 01/30</strong></p>
+                    <p><strong>CVC: 424</strong></p>
+                    <CardElement/>
                     <Divider hidden/>
                     <Button fluid size='small' color='green'>Confirm Order</Button>
                 </Form>
