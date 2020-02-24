@@ -195,7 +195,7 @@ export class UserShow extends React.Component {
                 CurrentPage = <ItemCard createCart={this.createCart} item={this.state.item} user={this.state.user}/>;
                 break;
             case 'orders':
-                CurrentPage = <OrdersCard user={this.state.user} />;
+                CurrentPage = <OrdersCard user={this.state.user} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} shippingType={this.state.shippingType} estimatedTotal={this.state.estimatedTotal} />;
                 break; 
             default:
                 break;
