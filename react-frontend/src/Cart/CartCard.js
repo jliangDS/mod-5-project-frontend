@@ -10,7 +10,7 @@ class CartCard extends React.Component {
 
     render() {
         return (
-            <Container text>
+            <Container>
                <Grid stackable columns={1}  verticalAlign='middle'>
                 {this.props.carts.map( cart => 
                     <Grid.Column key={cart.id}>
@@ -70,7 +70,7 @@ class CartCard extends React.Component {
                             <Divider clearing/>
                             <Grid columns={2}>
                                 <Grid.Column>
-                                    <p><strong>ESTIMATED TOTAL</strong></p>
+                                    <p><strong>TOTAL</strong></p>
                                 </Grid.Column>
                                 <Grid.Column>
                                     <p><strong>${this.props.estimatedTotal.toFixed(2)}</strong></p>

@@ -5,6 +5,7 @@ export default function ShippingFormNew(props){
 
     const [shipping, changeShipping] = useState({
         fullName: '',
+        email: '',
         address: '',
         city: '',
         state: '',
@@ -25,6 +26,7 @@ export default function ShippingFormNew(props){
             body: JSON.stringify({
                 user_id: props.user.id, 
                 fullName: shipping.fullName,
+                email: shipping.email, 
                 address: shipping.address,
                 city: shipping.city,
                 state: shipping.state,
@@ -46,6 +48,7 @@ export default function ShippingFormNew(props){
                 <Form size='large' onSubmit={handleSubmit}>
                     <Segment>
                         <Form.Input label="Full Name" value={shipping.fullName} onChange={e => changeShipping({...shipping, fullName: e.target.value})}/>
+                        <Form.Input label='Email' value={shipping.email} onChange={e => changeShipping({...shipping, email: e.target.value})}/>
                         <Form.Input label="Address" value={shipping.address} onChange={e => changeShipping({...shipping, address: e.target.value})}/>
                         <Form.Input label="City" value={shipping.city} onChange={e => changeShipping({...shipping, city: e.target.value})}/>
                         <Form.Input label="State" value={shipping.state} onChange={e => changeShipping({...shipping, state: e.target.value})}/>
@@ -66,12 +69,37 @@ export default function ShippingFormNew(props){
                             <Divider hidden />
                         </div>
                     )}
-                    <div>
-                        <p>SUBTOTAL ${props.subTotal.toFixed(2)}</p>
-                        <p>SALES TAX ${props.salesTax.toFixed(2)}</p>
-                        <p>SHIPPING ${props.shipping.toFixed(2)}</p>
-                        <p>TOTAL ${props.estimatedTotal.toFixed(2)}</p>
-                    </div>
+                </Segment>
+                <Segment>
+                    <Grid columns={2}>
+                        <Grid.Column>
+                            <p>SUBTOTAL</p>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <p>${props.subTotal.toFixed(2)}</p>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <p>SALES TAX</p>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <p>${props.salesTax.toFixed(2)}</p>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <p>SHIPPING</p>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <p>${props.shipping.toFixed(2)}</p>
+                        </Grid.Column>
+                    </Grid>
+                    <Divider clearing/> 
+                    <Grid columns={2}>
+                        <Grid.Column>
+                            <p><strong>TOTAL</strong></p>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <p><strong>${props.estimatedTotal.toFixed(2)}</strong></p>
+                        </Grid.Column>
+                    </Grid>
                 </Segment>
             </Grid.Column>
         </Grid>

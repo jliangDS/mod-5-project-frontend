@@ -1,7 +1,6 @@
 import React from 'react';
 import HomeCard from '../Menu/HomeCard'
 import NewsCard from '../Menu/NewsCard'
-import OrdersCard from '../Menu/OrdersCard'
 import AboutCard from '../Menu/AboutCard'
 import ContactCard from '../Menu/ContactCard'
 import ItemCollection from '../Shop/ItemCollection'
@@ -194,9 +193,6 @@ export class UserShow extends React.Component {
             case 'show':
                 CurrentPage = <ItemCard createCart={this.createCart} item={this.state.item} user={this.state.user}/>;
                 break;
-            case 'orders':
-                CurrentPage = <OrdersCard user={this.state.user} subTotal={this.state.subTotal} salesTax={this.state.salesTax} shipping={this.state.shipping} shippingType={this.state.shippingType} estimatedTotal={this.state.estimatedTotal} />;
-                break; 
             default:
                 break;
         }
@@ -221,7 +217,6 @@ export class UserShow extends React.Component {
                         <Menu.Item as='a' header onClick={() => this.switchPage('about', null)}>ABOUT</Menu.Item>
                         <Menu.Item as='a' header onClick={() => this.switchPage('news', null)}>NEWS & EVENTS</Menu.Item>
                         <Menu.Item as='a' header onClick={() => this.switchPage('contact', null)}>CONTACT</Menu.Item>
-                        <Menu.Item as='a' header onClick={() => this.switchPage('orders', null)}>ORDERS</Menu.Item>
                     </Container>
                 </Menu>
                 {CurrentPage}

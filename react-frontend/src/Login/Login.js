@@ -34,8 +34,8 @@ export function Login(props){
                 <Header textAlign='center'>Log-in to your account</Header>
                 <Form size='large' onSubmit={handleSubmit}>
                     <Segment>
-                        <Form.Input fluid icon='user' iconPosition='left' value={user.name} onChange={e => changeUser({ ...user, name: e.target.value})} placeholder='Use josh for Username'/>
-                        <Form.Input fluid icon='lock' iconPosition='left' value={user.password} onChange={e => changeUser({ ...user, password: e.target.value})} type='password' placeholder='Use 1234 for Password'/>
+                        <Form.Input fluid icon='user' iconPosition='left' value={user.name} onChange={e => changeUser({ ...user, name: e.target.value})} placeholder='Username'/>
+                        <Form.Input fluid icon='lock' iconPosition='left' value={user.password} onChange={e => changeUser({ ...user, password: e.target.value})} type='password' placeholder='Password'/>
 
                         <Button fluid size='large' color='green'>Login</Button>
                     </Segment>
